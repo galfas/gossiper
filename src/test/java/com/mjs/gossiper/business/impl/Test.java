@@ -1,18 +1,13 @@
 package com.mjs.gossiper.business.impl;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mjs.gossiper.domain.Account;
-import feign.gson.GsonDecoder;
 
 import java.util.Map;
 import java.util.Set;
 
-/**
- * Created by marcelosaciloto on 21/01/2017.
- */
 public class Test {
 
     @org.junit.Test

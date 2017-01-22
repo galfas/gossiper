@@ -47,7 +47,7 @@ public class AccountRepositoryImpl implements AccountRepository {
         MongoCollection<Document> collection = database.getCollection(COLLECTION_NAME);
 
         Document accountAsDocument = collection.find(eq("name", basicAccount.getName())).first();
-//        Gson gson = new Gson();
+
         if (accountAsDocument != null) {
             account = new Gson().fromJson(accountAsDocument.toJson(), Account.class);
         }
