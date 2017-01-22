@@ -2,13 +2,13 @@ package com.mjs.gossiper.business.impl;
 
 import com.mjs.gossiper.builder.AccountBuilder;
 import com.mjs.gossiper.builder.BasicAccountBuilder;
-import com.mjs.gossiper.builder.FeedsBuilder;
+import com.mjs.gossiper.builder.PlayerStatBuilder;
 import com.mjs.gossiper.business.AccountBo;
 import com.mjs.gossiper.business.StatsBo;
 import com.mjs.gossiper.dao.StatsRepository;
 import com.mjs.gossiper.domain.Account;
 import com.mjs.gossiper.domain.BasicAccount;
-import com.mjs.gossiper.domain.Feeds;
+import com.mjs.gossiper.domain.PlayerStat;
 import com.mjs.gossiper.gameprovider.GameProvider;
 import org.junit.Assert;
 import org.junit.Test;
@@ -37,60 +37,60 @@ public class StatsBoTest{
     public void shouldInsertTheStatistics(){
         BasicAccount basicAccount = BasicAccountBuilder.build();
         Account account = AccountBuilder.build();
-        Feeds feeds = FeedsBuilder.build();
+        PlayerStat playerStat = PlayerStatBuilder.build();
 
         Mockito.when(accountBo.getAccount(basicAccount)).thenReturn(account);
-        Mockito.when(gameProvider.getStats(account)).thenReturn(feeds);
+        Mockito.when(gameProvider.getStats(account)).thenReturn(playerStat);
 
-        Feeds responseFeeds = statsBo.registerStats(basicAccount);
+        PlayerStat responsePlayerStat = statsBo.registerStats(basicAccount);
 
-        Assert.assertNotNull(responseFeeds);
-        Assert.assertEquals(feeds, responseFeeds);
-        Mockito.verify(statsRepository, Mockito.times(1)).insert(feeds);
+        Assert.assertNotNull(responsePlayerStat);
+        Assert.assertEquals(playerStat, responsePlayerStat);
+        Mockito.verify(statsRepository, Mockito.times(1)).insert(playerStat);
     }
 
     @Test
     public void shouldNotInsertStatsWhenTheAccountIsNotFound(){
         BasicAccount basicAccount = BasicAccountBuilder.build();
         Account account = AccountBuilder.build();
-        Feeds feeds = FeedsBuilder.build();
+        PlayerStat playerStat = PlayerStatBuilder.build();
 
         Mockito.when(accountBo.getAccount(basicAccount)).thenReturn(null);
-        Mockito.when(gameProvider.getStats(account)).thenReturn(feeds);
+        Mockito.when(gameProvider.getStats(account)).thenReturn(playerStat);
 
-        Feeds responseFeeds = statsBo.registerStats(basicAccount);
+        PlayerStat responsePlayerStat = statsBo.registerStats(basicAccount);
 
-        Assert.assertNull(responseFeeds);
+        Assert.assertNull(responsePlayerStat);
         Mockito.verify(gameProvider, Mockito.times(0)).getStats(account);
-        Mockito.verify(statsRepository, Mockito.times(0)).insert(feeds);
+        Mockito.verify(statsRepository, Mockito.times(0)).insert(playerStat);
     }
 
     @Test(expected = RuntimeException.class)
     public void shouldThrowTheReceivedException(){
         BasicAccount basicAccount = BasicAccountBuilder.build();
         Account account = AccountBuilder.build();
-        Feeds feeds = FeedsBuilder.build();
+        PlayerStat playerStat = PlayerStatBuilder.build();
 
         Mockito.when(accountBo.getAccount(basicAccount)).thenReturn(account);
         Mockito.when(gameProvider.getStats(account)).thenThrow(new RuntimeException());
 
         statsBo.registerStats(basicAccount);
-        Mockito.verify(statsRepository, Mockito.times(0)).insert(feeds);
+        Mockito.verify(statsRepository, Mockito.times(0)).insert(playerStat);
     }
 
     @Test
     public void shouldGetConsolidate(){
         BasicAccount basicAccount = BasicAccountBuilder.build();
         Account account = AccountBuilder.build();
-        Feeds feeds = FeedsBuilder.build();
+        PlayerStat playerStat = PlayerStatBuilder.build();
 
         Mockito.when(accountBo.getAccount(basicAccount)).thenReturn(account);
-        Mockito.when(statsRepository.getStats(account)).thenReturn(feeds);
+        Mockito.when(statsRepository.getStats(account)).thenReturn(playerStat);
 
-        Feeds responseFeeds = statsBo.getConsolidate(basicAccount);
+        PlayerStat responsePlayerStat = statsBo.getConsolidate(basicAccount);
 
-        Assert.assertNotNull(responseFeeds);
-        Assert.assertEquals(feeds, responseFeeds);
+        Assert.assertNotNull(responsePlayerStat);
+        Assert.assertEquals(playerStat, responsePlayerStat);
 
         Mockito.verify(accountBo, Mockito.times(1)).getAccount(basicAccount);
         Mockito.verify(statsRepository, Mockito.times(1)).getStats(account);
@@ -103,9 +103,9 @@ public class StatsBoTest{
 
         Mockito.when(accountBo.getAccount(basicAccount)).thenReturn(null);
 
-        Feeds responseFeeds = statsBo.getConsolidate(basicAccount);
+        PlayerStat responsePlayerStat = statsBo.getConsolidate(basicAccount);
 
-        Assert.assertNull(responseFeeds);
+        Assert.assertNull(responsePlayerStat);
 
         Mockito.verify(accountBo, Mockito.times(1)).getAccount(basicAccount);
         Mockito.verify(statsRepository, Mockito.times(0)).getStats(account);

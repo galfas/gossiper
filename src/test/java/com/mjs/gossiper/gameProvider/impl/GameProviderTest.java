@@ -6,7 +6,7 @@ import com.mjs.gossiper.builder.AccountBuilder;
 import com.mjs.gossiper.builder.BasicAccountBuilder;
 import com.mjs.gossiper.domain.Account;
 import com.mjs.gossiper.domain.BasicAccount;
-import com.mjs.gossiper.domain.Feeds;
+import com.mjs.gossiper.domain.PlayerStat;
 import com.mjs.gossiper.gameprovider.GameProvider;
 import com.mjs.gossiper.gameprovider.contract.RiotProvider;
 import com.mjs.gossiper.gameprovider.impl.GameProviderImpl;
@@ -73,20 +73,20 @@ public class GameProviderTest {
     public void shouldFetchStats() throws IOException {
         ClassLoader classLoader = this.getClass().getClassLoader();
         String jsonAsString = IOUtils.toString(classLoader.getResourceAsStream("stats.json"), "UTF-8");
-        Feeds feeds = new Gson().fromJson(jsonAsString, Feeds.class);
+        PlayerStat playerStat = new Gson().fromJson(jsonAsString, PlayerStat.class);
 
         Account account = AccountBuilder.build();
 
-        Mockito.when(riotProvider.getStatsFor(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(feeds);
+        Mockito.when(riotProvider.getStatsFor(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(playerStat);
 
-        Feeds responseFeeds = gameProvider.getStats(account);
+        PlayerStat responsePlayerStat = gameProvider.getStats(account);
 
-        Assert.assertNotNull(responseFeeds);
-        Assert.assertEquals(responseFeeds.getSummonerId(), "27396167");
-        Assert.assertEquals(responseFeeds.getGames().size(), 10);
-        Assert.assertEquals(responseFeeds.getGames().get(0).getFellowPlayers().size(), 9);
-        Assert.assertEquals(responseFeeds.getGames().get(0).getSpell1(), 7);
-        Assert.assertEquals(responseFeeds.getGames().get(0).getSpell2(), 12);
+        Assert.assertNotNull(responsePlayerStat);
+        Assert.assertEquals(responsePlayerStat.getSummonerId(), "27396167");
+        Assert.assertEquals(responsePlayerStat.getGames().size(), 10);
+        Assert.assertEquals(responsePlayerStat.getGames().get(0).getFellowPlayers().size(), 9);
+        Assert.assertEquals(responsePlayerStat.getGames().get(0).getSpell1(), 7);
+        Assert.assertEquals(responsePlayerStat.getGames().get(0).getSpell2(), 12);
     }
 
     @Test
@@ -95,8 +95,8 @@ public class GameProviderTest {
 
         Mockito.when(riotProvider.getAccountForName(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(null);
 
-        Feeds responseFeeds = gameProvider.getStats(account);
+        PlayerStat responsePlayerStat = gameProvider.getStats(account);
 
-        Assert.assertNull(responseFeeds);
+        Assert.assertNull(responsePlayerStat);
     }
 }

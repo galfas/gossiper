@@ -1,11 +1,11 @@
 package com.mjs.gossiper.dao;
 
 import com.mjs.gossiper.domain.Account;
-import com.mjs.gossiper.domain.Feeds;
+import com.mjs.gossiper.domain.PlayerStat;
 
 public interface StatsRepository {
 
-    public Feeds insert(Feeds feeds);
+    PlayerStat insert(PlayerStat playerStat);
 
-    Feeds getStats(Account account);
+    PlayerStat getStats(Account account);
 }

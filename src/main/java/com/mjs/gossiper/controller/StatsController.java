@@ -3,7 +3,7 @@ package com.mjs.gossiper.controller;
 
 import com.mjs.gossiper.business.StatsBo;
 import com.mjs.gossiper.domain.BasicAccount;
-import com.mjs.gossiper.domain.Feeds;
+import com.mjs.gossiper.domain.PlayerStat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,7 +17,7 @@ public class StatsController {
     private StatsBo statsBo;
 
     @RequestMapping(method = RequestMethod.GET, value = "/consolidate")
-    public Feeds getConsolidate(BasicAccount basicAccount){
+    public PlayerStat getConsolidate(BasicAccount basicAccount){
         return statsBo.getConsolidate(basicAccount);
     }
 }

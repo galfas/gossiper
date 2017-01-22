@@ -2,7 +2,7 @@ package com.mjs.gossiper.domain;
 
 import java.util.List;
 
-public class Feeds {
+public class PlayerStat {
 
     private String summonerId;
 

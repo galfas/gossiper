@@ -1,7 +1,7 @@
 package com.mjs.gossiper.gameprovider.contract;
 
 import com.google.gson.JsonObject;
-import com.mjs.gossiper.domain.Feeds;
+import com.mjs.gossiper.domain.PlayerStat;
 import feign.Param;
 import feign.RequestLine;
 
@@ -13,7 +13,7 @@ public interface RiotProvider {
                                         @Param("key") String key);
 
     @RequestLine("GET /api/lol/{region}/v1.3/game/by-summoner/{summonerId}/recent?api_key={key}")
-    Feeds getStatsFor(@Param("summonerId") String summonerId,
-                             @Param("region") String region,
-                             @Param("key") String key);
+    PlayerStat getStatsFor(@Param("summonerId") String summonerId,
+                           @Param("region") String region,
+                           @Param("key") String key);
 }

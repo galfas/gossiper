@@ -5,7 +5,7 @@ import com.mjs.gossiper.business.StatsBo;
 import com.mjs.gossiper.dao.StatsRepository;
 import com.mjs.gossiper.domain.Account;
 import com.mjs.gossiper.domain.BasicAccount;
-import com.mjs.gossiper.domain.Feeds;
+import com.mjs.gossiper.domain.PlayerStat;
 import com.mjs.gossiper.gameprovider.GameProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -24,25 +24,25 @@ public class StatsBoImpl implements StatsBo {
 
 
     @Override
-    public Feeds registerStats(BasicAccount basicAccount) {
-        Feeds feeds = null;
+    public PlayerStat registerStats(BasicAccount basicAccount) {
+        PlayerStat playerStat = null;
         Account account = accountBo.getAccount(basicAccount);
         if(account!= null) {
-            feeds = gameProvider.getStats(account);
+            playerStat = gameProvider.getStats(account);
 
-            statsRepository.insert(feeds);
+            statsRepository.insert(playerStat);
         }
 
-        return feeds;
+        return playerStat;
     }
 
     @Override
-    public Feeds getConsolidate(BasicAccount basicAccount) {
-        Feeds feeds = null;
+    public PlayerStat getConsolidate(BasicAccount basicAccount) {
+        PlayerStat playerStat = null;
         Account account = accountBo.getAccount(basicAccount);
         if(account != null) {
-            feeds = statsRepository.getStats(account);
+            playerStat = statsRepository.getStats(account);
         }
-        return feeds;
+        return playerStat;
     }
 }

@@ -3,7 +3,7 @@ package com.mjs.gossiper.dao.impl;
 import com.google.gson.Gson;
 import com.mjs.gossiper.dao.StatsRepository;
 import com.mjs.gossiper.domain.Account;
-import com.mjs.gossiper.domain.Feeds;
+import com.mjs.gossiper.domain.PlayerStat;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
@@ -27,26 +27,26 @@ public class StatsRepositoryImpl implements StatsRepository {
 
 
     @Override
-    public Feeds insert(Feeds feeds){
+    public PlayerStat insert(PlayerStat playerStat){
         MongoCollection<Document> collection = mongoDatabaseClient.getCollection(COLLECTION_NAME);
 
-        collection.insertOne(Document.parse(new Gson().toJson(feeds)));
+        collection.insertOne(Document.parse(new Gson().toJson(playerStat)));
 
-        return feeds;
+        return playerStat;
     }
 
     @Override
-    public Feeds getStats(Account account){
-        Feeds feeds = null;
+    public PlayerStat getStats(Account account){
+        PlayerStat playerStat = null;
 
         MongoCollection<Document> collection = mongoDatabaseClient.getCollection(COLLECTION_NAME);
 
         Document accountAsDocument = collection.find(eq(SUMMONER_ID_FIELD, account.getId())).first();
 
         if (accountAsDocument != null) {
-            feeds = new Gson().fromJson(accountAsDocument.toJson(), Feeds.class);
+            playerStat = new Gson().fromJson(accountAsDocument.toJson(), PlayerStat.class);
         }
 
-        return feeds;
+        return playerStat;
     }
 }

@@ -2,10 +2,10 @@ package com.mjs.gossiper.controller;
 
 
 import com.mjs.gossiper.builder.BasicAccountBuilder;
-import com.mjs.gossiper.builder.FeedsBuilder;
+import com.mjs.gossiper.builder.PlayerStatBuilder;
 import com.mjs.gossiper.business.StatsBo;
 import com.mjs.gossiper.domain.BasicAccount;
-import com.mjs.gossiper.domain.Feeds;
+import com.mjs.gossiper.domain.PlayerStat;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,11 +29,11 @@ public class StatsControllerTest {
         String region = "EUW";
 
         BasicAccount basicAccount = BasicAccountBuilder.build(name, region);
-        Mockito.when(statsBo.getConsolidate(basicAccount)).thenReturn(FeedsBuilder.build());
+        Mockito.when(statsBo.getConsolidate(basicAccount)).thenReturn(PlayerStatBuilder.build());
 
-        Feeds feeds = statsController.getConsolidate(basicAccount);
+        PlayerStat playerStat = statsController.getConsolidate(basicAccount);
 
-        Assert.assertNotNull(feeds);
+        Assert.assertNotNull(playerStat);
         Mockito.verify(this.statsBo, Mockito.times(1)).getConsolidate(basicAccount);
     }
 

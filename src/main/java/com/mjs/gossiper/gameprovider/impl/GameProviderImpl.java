@@ -5,7 +5,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mjs.gossiper.domain.Account;
 import com.mjs.gossiper.domain.BasicAccount;
-import com.mjs.gossiper.domain.Feeds;
+import com.mjs.gossiper.domain.PlayerStat;
 import com.mjs.gossiper.gameprovider.GameProvider;
 import com.mjs.gossiper.gameprovider.contract.RiotProvider;
 import feign.FeignException;
@@ -60,12 +60,12 @@ public class GameProviderImpl implements GameProvider {
     }
 
     @Override
-    public Feeds getStats(Account account) {
+    public PlayerStat getStats(Account account) {
         logger.debug(String.format("It is going to fetch stats for the user that has the id '%s'", account.getId()));
 
-        Feeds feeds = null;
+        PlayerStat playerStat = null;
         try {
-            feeds = riotProvider.getStatsFor(account.getId(), account.getRegion(), apiRiotKey);
+            playerStat = riotProvider.getStatsFor(account.getId(), account.getRegion(), apiRiotKey);
         } catch (FeignException ex) {
             logger.error(String.format("Client return the error '%s' while fetching account for '%s' ", account.getId(), ex.getCause()));
             throw ex;
@@ -74,7 +74,7 @@ public class GameProviderImpl implements GameProvider {
             throw ex;
         }
 
-        return feeds;
+        return playerStat;
     }
 
     private Account jsonToAccount(JsonObject accountAsJson) {
