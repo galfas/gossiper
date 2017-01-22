@@ -35,9 +35,11 @@ public class GameProviderImpl implements GameProvider {
     public Account fetchAccountBy(BasicAccount basicAccount) throws IOException {
         logger.debug(String.format("The fetch method of data will be performed with the follow parameters '%s'", basicAccount));
 
+        Account account = null;
         JsonObject accountAsJson = null;
         try {
             accountAsJson = riotProvider.getAccountForName(basicAccount.getName(), basicAccount.getRegion(), apiRiotKey);
+
         } catch (FeignException ex) {
             logger.error(String.format("Client return the error '%s' while fetching account for '%s' ", ex.getCause(), basicAccount.getName()));
             throw new IOException(ex.getMessage(), ex.getCause());
@@ -46,9 +48,15 @@ public class GameProviderImpl implements GameProvider {
             throw ex;
         }
 
-        return jsonToAccount(accountAsJson)
-                .enrichWithLocale(basicAccount)
-                .enrichWithLastUpdate();
+        if(accountAsJson == null){
+            logger.error(String.format("The user was not found, the name is: '%s'", basicAccount.getName()));
+        }else{
+            account = jsonToAccount(accountAsJson)
+                    .enrichWithLocale(basicAccount)
+                    .enrichWithLastUpdate();
+        }
+
+        return account;
     }
 
     @Override
@@ -69,18 +77,18 @@ public class GameProviderImpl implements GameProvider {
         return feeds;
     }
 
-    private Account jsonToAccount(JsonObject accountAsJsonObject) {
+    private Account jsonToAccount(JsonObject accountAsJson) {
         Account account = null;
 
         try {
-            Set<Map.Entry<String, JsonElement>> entries = accountAsJsonObject.entrySet();
+            Set<Map.Entry<String, JsonElement>> entries = accountAsJson.entrySet();
 
             for (Map.Entry<String, JsonElement> entry : entries) {
                 account = new Gson().fromJson(entry.getValue(), Account.class);
                 account.setName(entry.getKey());
             }
         } catch (DecodeException de) {
-            logger.error(String.format("Error decoding object for '%s'", accountAsJsonObject));
+            logger.error(String.format("Error decoding object for '%s'", accountAsJson));
             throw de;
         }
 
