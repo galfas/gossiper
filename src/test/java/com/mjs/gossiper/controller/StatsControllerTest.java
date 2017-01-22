@@ -1,9 +1,9 @@
 package com.mjs.gossiper.controller;
 
 
+import com.mjs.gossiper.builder.BasicAccountBuilder;
 import com.mjs.gossiper.builder.FeedsBuilder;
 import com.mjs.gossiper.business.StatsBo;
-import com.mjs.gossiper.domain.Account;
 import com.mjs.gossiper.domain.BasicAccount;
 import com.mjs.gossiper.domain.Feeds;
 import org.junit.Assert;
@@ -36,7 +36,7 @@ public class StatsControllerTest {
         String name = "testName";
         String region = "EUW";
 
-        BasicAccount basicAccount = new BasicAccount(name, region);
+        BasicAccount basicAccount = BasicAccountBuilder.build(name, region);
         Mockito.when(statsBo.getStats(basicAccount)).thenReturn(FeedsBuilder.build());
 
         Feeds feeds = statsController.getStats(basicAccount);
@@ -50,7 +50,7 @@ public class StatsControllerTest {
         String name = "err";
         String region = "err";
 
-        BasicAccount basicAccount = new BasicAccount(name, region);
+        BasicAccount basicAccount = BasicAccountBuilder.build(name, region);
         Mockito.when(statsBo.getStats(basicAccount)).thenThrow(new RuntimeException());
 
         statsController.getStats(basicAccount);
@@ -65,7 +65,7 @@ public class StatsControllerTest {
         String name = "testName";
         String region = "EUW";
 
-        BasicAccount basicAccount = new BasicAccount(name, region);
+        BasicAccount basicAccount = BasicAccountBuilder.build(name, region);
         Mockito.when(statsBo.getConsolidate(basicAccount)).thenReturn(FeedsBuilder.build());
 
         Feeds feeds = statsController.getConsolidate(basicAccount);
@@ -79,7 +79,7 @@ public class StatsControllerTest {
         String name = "err";
         String region = "err";
 
-        BasicAccount basicAccount = new BasicAccount(name, region);
+        BasicAccount basicAccount = BasicAccountBuilder.build(name, region);
         Mockito.when(statsBo.getConsolidate(basicAccount)).thenThrow(new RuntimeException());
 
         statsController.getConsolidate(basicAccount);

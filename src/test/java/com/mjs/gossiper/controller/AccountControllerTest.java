@@ -1,6 +1,7 @@
 package com.mjs.gossiper.controller;
 
 import com.mjs.gossiper.builder.AccountBuilder;
+import com.mjs.gossiper.builder.BasicAccountBuilder;
 import com.mjs.gossiper.business.AccountBo;
 import com.mjs.gossiper.domain.Account;
 import com.mjs.gossiper.domain.BasicAccount;
@@ -33,7 +34,7 @@ public class AccountControllerTest {
         String name = "testName";
         String region = "EUW";
 
-        BasicAccount basicAccount = new BasicAccount(name, region);
+        BasicAccount basicAccount = BasicAccountBuilder.build(name, region);
         Mockito.when(accountBo.getAccount(basicAccount)).thenReturn(AccountBuilder.build(name, region));
 
         Account account = accountController.getAccount(basicAccount);
@@ -48,7 +49,7 @@ public class AccountControllerTest {
         String name = "err";
         String region = "err";
 
-        BasicAccount basicAccount = new BasicAccount(name, region);
+        BasicAccount basicAccount = BasicAccountBuilder.build(name, region);
         Mockito.when(accountBo.getAccount(basicAccount)).thenThrow(new RuntimeException());
 
         accountController.getAccount(basicAccount);
@@ -59,7 +60,7 @@ public class AccountControllerTest {
         String name = "testName";
         String region = "EUW";
 
-        BasicAccount basicAccount = new BasicAccount(name, region);
+        BasicAccount basicAccount = BasicAccountBuilder.build(name, region);
 
         accountController.registerUser(basicAccount);
 
@@ -71,7 +72,7 @@ public class AccountControllerTest {
         String name = "err";
         String region = "err";
 
-        BasicAccount basicAccount = new BasicAccount(name, region);
+        BasicAccount basicAccount = BasicAccountBuilder.build(name, region);
 
         Mockito.doThrow(new RuntimeException()).when(actionPublisher).send(basicAccount);
 
