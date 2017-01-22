@@ -8,6 +8,8 @@ import com.mjs.gossiper.gameprovider.GameProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
+
 
 @Component
 public class AccountBoImpl implements AccountBo {
@@ -20,7 +22,7 @@ public class AccountBoImpl implements AccountBo {
 
 
   @Override
-  public void insert(BasicAccount basicAccount) {
+  public void insert(BasicAccount basicAccount) throws IOException {
     Account account = gameProvider.fetchAccountBy(basicAccount);
     accountRepository.insert(account);
   }

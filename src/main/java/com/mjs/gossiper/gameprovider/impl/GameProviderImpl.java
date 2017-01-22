@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
 import java.util.Map;
 import java.util.Set;
 
@@ -31,7 +32,7 @@ public class GameProviderImpl implements GameProvider {
     private String apiRiotKey;
 
     @Override
-    public Account fetchAccountBy(BasicAccount basicAccount) {
+    public Account fetchAccountBy(BasicAccount basicAccount) throws IOException {
         logger.debug(String.format("The fetch method of data will be performed with the follow parameters '%s'", basicAccount));
 
         JsonObject accountAsJson = null;
@@ -39,7 +40,7 @@ public class GameProviderImpl implements GameProvider {
             accountAsJson = riotProvider.getAccountForName(basicAccount.getName(), basicAccount.getRegion(), apiRiotKey);
         } catch (FeignException ex) {
             logger.error(String.format("Client return the error '%s' while fetching account for '%s' ", ex.getCause(), basicAccount.getName()));
-            throw ex;
+            throw new IOException(ex.getMessage(), ex.getCause());
         } catch (Exception ex) {
             logger.error(String.format("Unexpected error '%s'", basicAccount.getName()));
             throw ex;

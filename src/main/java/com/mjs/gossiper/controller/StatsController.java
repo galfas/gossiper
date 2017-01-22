@@ -18,7 +18,7 @@ public class StatsController {
 
 
     @RequestMapping(method = RequestMethod.GET)
-    public Feeds getAccount(BasicAccount basicAccount){
+    public Feeds getStats(BasicAccount basicAccount){
         return statsBo.getStats(basicAccount);
     }
 
