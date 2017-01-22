@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:rabbit="http://www.springframework.org/schema/rabbit"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+       http://www.springframework.org/schema/rabbit http://www.springframework.org/schema/rabbit/spring-rabbit-1.0.xsd">
+
+    <!-- Spring configuration -->
+    <context:component-scan base-package="com.mjs.gossiper"/>
+    <context:mbean-export default-domain="com.mjs.gossiper.listener"/>
+
+    <!-- RabbitMQ common configuration -->
+    <rabbit:connection-factory id="connectionFactory"/>
+    <rabbit:template id="amqpTemplate" connection-factory="connectionFactory"/>
+    <rabbit:admin connection-factory="connectionFactory"/>
+
+    <!-- Queues -->
+    <rabbit:queue id="actionQueue" name="action-queue" auto-delete="true" durable="true"/>
+
+    <rabbit:listener-container connection-factory="connectionFactory">
+        <rabbit:listener ref="accountListener" method="handleAccount" queue-names="action-queue" />
+    </rabbit:listener-container>
+
+    <bean id="accountListener" class="com.mjs.gossiper.listener.AccountListener"/>
+
+    <!-- Bindings -->
+    <rabbit:fanout-exchange name="amq.fanout">
+        <rabbit:bindings>
+            <rabbit:binding queue="actionQueue"/>
+        </rabbit:bindings>
+    </rabbit:fanout-exchange>
+
+</beans>
