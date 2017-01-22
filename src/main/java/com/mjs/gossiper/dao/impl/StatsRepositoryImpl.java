@@ -48,7 +48,7 @@ public class StatsRepositoryImpl implements StatsRepository {
 
         MongoCollection<Document> collection = database.getCollection(COLLECTION_NAME);
 
-        Document accountAsDocument = collection.find(eq("id", account.getId())).first();
+        Document accountAsDocument = collection.find(eq("summonerId", account.getId())).first();
 
         if (accountAsDocument != null) {
             feeds = new Gson().fromJson(accountAsDocument.toJson(), Feeds.class);
