@@ -8,12 +8,10 @@ import com.mjs.gossiper.dao.AccountRepository;
 import com.mjs.gossiper.domain.Account;
 import com.mjs.gossiper.domain.BasicAccount;
 import com.mjs.gossiper.util.GsonCustomizedTypeAdapterFactory;
-import com.mongodb.MongoClient;
-import com.mongodb.MongoClientURI;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import static com.mongodb.client.model.Filters.eq;
@@ -21,21 +19,22 @@ import static com.mongodb.client.model.Filters.eq;
 @Component
 public class AccountRepositoryImpl implements AccountRepository {
 
-    @Value("${database.mongodb.name}")
-    private String databaseName;
+    @Autowired
+    private MongoDatabase mongoDatabaseClient;
+
+    private Gson gsonWithTypeAdapter = new GsonBuilder()
+                                            .registerTypeAdapterFactory(new AccountTypeAdapterGson())
+                                            .create();
 
     private static final String COLLECTION_NAME = "player";
+    private static final String FIELD_NAME = "name";
+    private static final String REVISION_DATE_FIELD = "revisionDate";
+    private static final String LAST_UPDATE_FIELD = "lastUpdate";
 
-    private Gson gsonWithTypeAdapter = new GsonBuilder().registerTypeAdapterFactory(new AccountTypeAdapterGson()).create();
 
-
+    @Override
     public Account insert(Account account) {
-        MongoClientURI connectionString = new MongoClientURI("mongodb://localhost:27017");
-        MongoClient mongoClient = new MongoClient(connectionString);
-
-        MongoDatabase database = mongoClient.getDatabase(databaseName);
-
-        MongoCollection<Document> collection = database.getCollection(COLLECTION_NAME);
+        MongoCollection<Document> collection = mongoDatabaseClient.getCollection(COLLECTION_NAME);
 
         collection.insertOne(Document.parse(gsonWithTypeAdapter.toJson(account)));
 
@@ -46,14 +45,9 @@ public class AccountRepositoryImpl implements AccountRepository {
     public Account getAccountFor(BasicAccount basicAccount) {
         Account account = null;
 
-        MongoClientURI connectionString = new MongoClientURI("mongodb://localhost:27017");
-        MongoClient mongoClient = new MongoClient(connectionString);
+        MongoCollection<Document> collection = mongoDatabaseClient.getCollection(COLLECTION_NAME);
 
-        MongoDatabase database = mongoClient.getDatabase(databaseName);
-
-        MongoCollection<Document> collection = database.getCollection(COLLECTION_NAME);
-
-        Document accountAsDocument = collection.find(eq("name", basicAccount.getName())).first();
+        Document accountAsDocument = collection.find(eq(FIELD_NAME, basicAccount.getName())).first();
 
         if (accountAsDocument != null) {
             account = gsonWithTypeAdapter.fromJson(accountAsDocument.toJson(), Account.class);
@@ -62,7 +56,6 @@ public class AccountRepositoryImpl implements AccountRepository {
         return account;
     }
 
-
     class AccountTypeAdapterGson extends GsonCustomizedTypeAdapterFactory<Account> {
         public AccountTypeAdapterGson() {
             super(Account.class);
@@ -70,14 +63,14 @@ public class AccountRepositoryImpl implements AccountRepository {
 
         @Override
         protected void afterRead(JsonElement deserialized) {
-            updateLongObject(deserialized, "revisionDate");
-            updateLongObject(deserialized, "lastUpdate");
+            updateLongObject(deserialized, REVISION_DATE_FIELD);
+            updateLongObject(deserialized, LAST_UPDATE_FIELD);
         }
 
         private void updateLongObject(JsonElement deserialized, String field) {
             JsonObject longField = deserialized.getAsJsonObject().get(field).getAsJsonObject();
             deserialized.getAsJsonObject().remove(field);
-            deserialized.getAsJsonObject().add(field, longField.get(field));
+            deserialized.getAsJsonObject().add(field, longField.get("$numberLong"));
         }
     }
 }

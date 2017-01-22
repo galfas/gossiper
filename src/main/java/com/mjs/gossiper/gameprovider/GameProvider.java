@@ -7,7 +7,7 @@ import com.mjs.gossiper.domain.Feeds;
 
 public interface GameProvider {
 
-  Account fetchAccountBy(BasicAccount basicAccount);
+    Account fetchAccountBy(BasicAccount basicAccount);
 
-  Feeds getStats(Account account);
+    Feeds getStats(Account account);
 }
