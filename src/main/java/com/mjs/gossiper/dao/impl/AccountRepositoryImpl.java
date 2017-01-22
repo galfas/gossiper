@@ -10,6 +10,7 @@ import com.mjs.gossiper.domain.BasicAccount;
 import com.mjs.gossiper.util.GsonCustomizedTypeAdapterFactory;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.UpdateOptions;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -23,8 +24,8 @@ public class AccountRepositoryImpl implements AccountRepository {
     private MongoDatabase mongoDatabaseClient;
 
     private Gson gsonWithTypeAdapter = new GsonBuilder()
-                                            .registerTypeAdapterFactory(new AccountTypeAdapterGson())
-                                            .create();
+            .registerTypeAdapterFactory(new AccountTypeAdapterGson())
+            .create();
 
     private static final String COLLECTION_NAME = "player";
     private static final String NAME_FIELD = "name";
@@ -36,7 +37,9 @@ public class AccountRepositoryImpl implements AccountRepository {
     public Account insert(Account account) {
         MongoCollection<Document> collection = mongoDatabaseClient.getCollection(COLLECTION_NAME);
 
-        collection.insertOne(Document.parse(gsonWithTypeAdapter.toJson(account)));
+        collection.updateOne(eq(NAME_FIELD, account.getName()), new Document("$set",
+                                Document.parse(gsonWithTypeAdapter.toJson(account))),
+                                (new UpdateOptions()).upsert(true));
 
         return account;
     }
