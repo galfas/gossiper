@@ -42,7 +42,7 @@ public class StatsBoTest{
         Mockito.when(accountBo.getAccount(basicAccount)).thenReturn(account);
         Mockito.when(gameProvider.getStats(account)).thenReturn(feeds);
 
-        Feeds responseFeeds = statsBo.getStats(basicAccount);
+        Feeds responseFeeds = statsBo.registerStats(basicAccount);
 
         Assert.assertNotNull(responseFeeds);
         Assert.assertEquals(feeds, responseFeeds);
@@ -58,7 +58,7 @@ public class StatsBoTest{
         Mockito.when(accountBo.getAccount(basicAccount)).thenReturn(null);
         Mockito.when(gameProvider.getStats(account)).thenReturn(feeds);
 
-        Feeds responseFeeds = statsBo.getStats(basicAccount);
+        Feeds responseFeeds = statsBo.registerStats(basicAccount);
 
         Assert.assertNull(responseFeeds);
         Mockito.verify(gameProvider, Mockito.times(0)).getStats(account);
@@ -74,7 +74,7 @@ public class StatsBoTest{
         Mockito.when(accountBo.getAccount(basicAccount)).thenReturn(account);
         Mockito.when(gameProvider.getStats(account)).thenThrow(new RuntimeException());
 
-        statsBo.getStats(basicAccount);
+        statsBo.registerStats(basicAccount);
         Mockito.verify(statsRepository, Mockito.times(0)).insert(feeds);
     }
 

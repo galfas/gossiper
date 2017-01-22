@@ -22,7 +22,7 @@ public class StatsRepositoryImpl implements StatsRepository {
     @Autowired
     private MongoDatabase mongoDatabaseClient;
 
-    private static final String COLLECTION_NAME = "numbers";
+    private static final String COLLECTION_NAME = "statistics";
     private static final String SUMMONER_ID_FIELD = "summonerId";
 
 

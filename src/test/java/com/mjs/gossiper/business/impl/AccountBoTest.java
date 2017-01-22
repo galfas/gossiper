@@ -7,13 +7,13 @@ import com.mjs.gossiper.dao.AccountRepository;
 import com.mjs.gossiper.domain.Account;
 import com.mjs.gossiper.domain.BasicAccount;
 import com.mjs.gossiper.gameprovider.GameProvider;
+import com.mjs.gossiper.publisher.ActionPublisher;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.stereotype.Component;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.io.IOException;
@@ -28,6 +28,9 @@ public class AccountBoTest {
   @Mock
   GameProvider gameProvider;
 
+  @Mock
+  ActionPublisher actionPublisher;
+
   @InjectMocks
   AccountBo accountBo = new AccountBoImpl();
 
@@ -39,10 +42,11 @@ public class AccountBoTest {
     Mockito.when(gameProvider.fetchAccountBy(basicAccount)).thenReturn(account);
     Mockito.when(accountRepository.insert(account)).thenReturn(account);
 
-    accountBo.insert(basicAccount);
+    accountBo.registerAccount(basicAccount);
 
     Mockito.verify(gameProvider, Mockito.times(1)).fetchAccountBy(basicAccount);
     Mockito.verify(accountRepository, Mockito.times(1)).insert(account);
+    Mockito.verify(actionPublisher, Mockito.times(1)).registerStats(basicAccount);
   }
 
   @Test(expected=RuntimeException.class)
@@ -52,9 +56,10 @@ public class AccountBoTest {
 
     Mockito.when(gameProvider.fetchAccountBy(basicAccount)).thenThrow(new RuntimeException());
 
-    accountBo.insert(basicAccount);
+    accountBo.registerAccount(basicAccount);
 
     Mockito.verify(accountRepository, Mockito.times(0)).insert(Mockito.any());
+    Mockito.verify(actionPublisher, Mockito.times(0)).registerStats(basicAccount);
   }
 
   @Test(expected=RuntimeException.class)
@@ -65,7 +70,9 @@ public class AccountBoTest {
     Mockito.when(gameProvider.fetchAccountBy(basicAccount)).thenReturn(account);
     Mockito.when(accountRepository.insert(Mockito.any())).thenThrow(new RuntimeException());
 
-    accountBo.insert(basicAccount);
+    accountBo.registerAccount(basicAccount);
+
+    Mockito.verify(actionPublisher, Mockito.times(0)).registerStats(basicAccount);
   }
 
   @Test

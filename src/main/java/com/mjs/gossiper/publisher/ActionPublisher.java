@@ -15,12 +15,22 @@ public class ActionPublisher {
   private AmqpTemplate template;
 
   @ManagedOperation
-  public void send(BasicAccount basicAccount) {
-    send("amq.fanout", "actionQueue", basicAccount);
+  public void registerAccount(BasicAccount basicAccount) {
+    registerAccount("account.fanout", "actionQueue", basicAccount);
   }
 
   @ManagedOperation
-  public void send(String exchange, String key,  BasicAccount basicAccount) {
+  public void registerAccount(String exchange, String key, BasicAccount basicAccount) {
+    template.convertAndSend(exchange, key, basicAccount);
+  }
+
+  @ManagedOperation
+  public void registerStats(BasicAccount basicAccount) {
+    registerStats("stats.fanout", "actionQueue", basicAccount);
+  }
+
+  @ManagedOperation
+  public void registerStats(String exchange, String key, BasicAccount basicAccount) {
     template.convertAndSend(exchange, key, basicAccount);
   }
 }

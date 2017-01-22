@@ -6,7 +6,7 @@ import com.mjs.gossiper.domain.BasicAccount;
 
 public interface AccountRepository {
 
-  public Account insert(Account account);
+  Account insert(Account account);
 
-  public Account getAccountFor(BasicAccount basicAccount);
+  Account getAccountFor(BasicAccount basicAccount);
 }

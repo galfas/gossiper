@@ -16,12 +16,6 @@ public class StatsController {
     @Autowired
     private StatsBo statsBo;
 
-
-    @RequestMapping(method = RequestMethod.GET)
-    public Feeds getStats(BasicAccount basicAccount){
-        return statsBo.getStats(basicAccount);
-    }
-
     @RequestMapping(method = RequestMethod.GET, value = "/consolidate")
     public Feeds getConsolidate(BasicAccount basicAccount){
         return statsBo.getConsolidate(basicAccount);

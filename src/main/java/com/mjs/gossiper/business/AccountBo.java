@@ -10,8 +10,8 @@ import java.io.IOException;
  */
 public interface AccountBo {
 
-  public void insert(BasicAccount basicAccount) throws IOException;
+  void registerAccount(BasicAccount basicAccount) throws IOException;
 
-  public Account getAccount(BasicAccount basicAccount);
+  Account getAccount(BasicAccount basicAccount);
 
 }

@@ -25,6 +25,6 @@ public class AccountController {
 
   @RequestMapping(method = RequestMethod.POST)
   public void registerUser(@RequestBody BasicAccount basicAccount) throws IOException {
-    actionPublisher.send(basicAccount);
+    actionPublisher.registerAccount(basicAccount);
   }
 }

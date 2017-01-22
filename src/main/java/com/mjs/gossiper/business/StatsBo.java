@@ -8,7 +8,7 @@ import com.mjs.gossiper.domain.Feeds;
  */
 public interface StatsBo {
 
-    Feeds getStats(BasicAccount basicAccount);
+    Feeds registerStats(BasicAccount basicAccount);
 
     Feeds getConsolidate(BasicAccount basicAccount);
 }

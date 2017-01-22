@@ -64,7 +64,7 @@ public class AccountControllerTest {
 
         accountController.registerUser(basicAccount);
 
-        Mockito.verify(actionPublisher, Mockito.times(1)).send(basicAccount);
+        Mockito.verify(actionPublisher, Mockito.times(1)).registerAccount(basicAccount);
     }
 
     @Test(expected=RuntimeException.class)
@@ -74,7 +74,7 @@ public class AccountControllerTest {
 
         BasicAccount basicAccount = BasicAccountBuilder.build(name, region);
 
-        Mockito.doThrow(new RuntimeException()).when(actionPublisher).send(basicAccount);
+        Mockito.doThrow(new RuntimeException()).when(actionPublisher).registerAccount(basicAccount);
 
         accountController.registerUser(basicAccount);
     }

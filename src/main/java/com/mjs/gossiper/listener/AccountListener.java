@@ -1,5 +1,6 @@
 package com.mjs.gossiper.listener;
 
+import ch.qos.logback.core.net.SyslogOutputStream;
 import com.mjs.gossiper.business.AccountBo;
 import com.mjs.gossiper.domain.BasicAccount;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,6 @@ public class AccountListener {
   private AccountBo accountBo;
 
   public void handleAccount(BasicAccount basicAccount) throws IOException {
-    accountBo.insert(basicAccount);
+    accountBo.registerAccount(basicAccount);
   }
 }

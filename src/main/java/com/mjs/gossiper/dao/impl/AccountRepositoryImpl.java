@@ -27,7 +27,7 @@ public class AccountRepositoryImpl implements AccountRepository {
                                             .create();
 
     private static final String COLLECTION_NAME = "player";
-    private static final String FIELD_NAME = "name";
+    private static final String NAME_FIELD = "name";
     private static final String REVISION_DATE_FIELD = "revisionDate";
     private static final String LAST_UPDATE_FIELD = "lastUpdate";
 
@@ -47,7 +47,7 @@ public class AccountRepositoryImpl implements AccountRepository {
 
         MongoCollection<Document> collection = mongoDatabaseClient.getCollection(COLLECTION_NAME);
 
-        Document accountAsDocument = collection.find(eq(FIELD_NAME, basicAccount.getName())).first();
+        Document accountAsDocument = collection.find(eq(NAME_FIELD, basicAccount.getName())).first();
 
         if (accountAsDocument != null) {
             account = gsonWithTypeAdapter.fromJson(accountAsDocument.toJson(), Account.class);

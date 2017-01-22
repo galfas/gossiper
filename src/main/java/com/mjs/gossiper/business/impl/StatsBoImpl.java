@@ -24,7 +24,7 @@ public class StatsBoImpl implements StatsBo {
 
 
     @Override
-    public Feeds getStats(BasicAccount basicAccount) {
+    public Feeds registerStats(BasicAccount basicAccount) {
         Feeds feeds = null;
         Account account = accountBo.getAccount(basicAccount);
         if(account!= null) {

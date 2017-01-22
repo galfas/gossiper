@@ -17,19 +17,32 @@
     <rabbit:admin connection-factory="connectionFactory"/>
 
     <!-- Queues -->
-    <rabbit:queue id="actionQueue" name="action-queue" auto-delete="true" durable="true"/>
+    <rabbit:queue id="registerAccountQueue" name="register-account-queue" auto-delete="true" durable="true"/>
+    <rabbit:queue id="registerStatsQueue" name="register-stats-queue" auto-delete="true" durable="true"/>
+    <!--<rabbit:listener-container connection-factory="connectionFactory">-->
+    <!--<rabbit:listener ref="accountListener" method="handleAccount" queue-names="action-queue" />-->
+    <!--</rabbit:listener-container>-->
+    <!---->
+    <bean id="accountListener" class="com.mjs.gossiper.listener.AccountListener"/>
+    <bean id="statsListener" class="com.mjs.gossiper.listener.StatsListener"/>
+
 
     <rabbit:listener-container connection-factory="connectionFactory">
-        <rabbit:listener ref="accountListener" method="handleAccount" queue-names="action-queue" />
+        <rabbit:listener ref="accountListener" method="handleAccount" queue-names="register-account-queue"/>
+        <rabbit:listener ref="statsListener" method="handleStats" queue-names="register-stats-queue"/>
     </rabbit:listener-container>
 
-    <bean id="accountListener" class="com.mjs.gossiper.listener.AccountListener"/>
 
     <!-- Bindings -->
-    <rabbit:fanout-exchange name="amq.fanout">
+    <rabbit:fanout-exchange name="account.fanout">
         <rabbit:bindings>
-            <rabbit:binding queue="actionQueue"/>
+            <rabbit:binding queue="registerAccountQueue"/>
         </rabbit:bindings>
     </rabbit:fanout-exchange>
 
+    <rabbit:fanout-exchange name="stats.fanout">
+        <rabbit:bindings>
+            <rabbit:binding queue="registerStatsQueue"/>
+        </rabbit:bindings>
+    </rabbit:fanout-exchange>
 </beans>
