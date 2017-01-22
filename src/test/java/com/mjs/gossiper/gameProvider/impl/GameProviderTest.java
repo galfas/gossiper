@@ -40,7 +40,7 @@ public class GameProviderTest {
 
         JsonObject jsonFile = new Gson().fromJson(jsonAsString, JsonObject.class);
 
-        BasicAccount basicAccount = BasicAccountBuilder.build();
+        BasicAccount basicAccount = BasicAccountBuilder.build("testName", "BRA");
         Account account = AccountBuilder.build();
 
         Mockito.when(riotProvider.getAccountForName(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(jsonFile);

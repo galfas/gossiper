@@ -1,25 +1,23 @@
 package com.mjs.gossiper.domain;
 
-import org.mongodb.morphia.annotations.Reference;
-
 import java.util.List;
 
 public class Game {
-    private String gameId;//: 2200419678,
-    private boolean invalid;//: false,
-    private String gameMode;//: "CLASSIC",
-    private String gameType;//: "MATCHED_GAME",
-    private String subType;//: "NORMAL",
-    private int mapId;//: 11,
-    private int teamId;//: 100,
-    private int championId;//: 13,
-    private int spell1;//: 7,
-    private int spell2;//: 12,
-    private int level;//: 15,
-    private String createDate;//: 1436831731011,
-    @Reference
+    private String gameId;
+    private boolean invalid;
+    private String gameMode;
+    private String gameType;
+    private String subType;
+    private int mapId;
+    private int teamId;
+    private int championId;
+    private int spell1;
+    private int spell2;
+    private int level;
+    private String createDate;
+
     private List<FellowPlayer> fellowPlayers;
-    @Reference
+
     private PlayerStats stats;
 
     public String getGameId() {
