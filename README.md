@@ -40,20 +40,30 @@ and then you will be able access the API via:
 
 <i>http://localhost:9090/gossiper/account/?name={userName}&region={userRegion}</i>
 
+###The product
+Based on the User's stats, I want to create a service that provide information like:
+ - The best partner (friend that make the user wins more battle)
+ - The worst enemy (friend that make the user looses more battle)
+ - User best champion
+ - User worst champion
+ and so on 
+ (this would be the MVP)
+
 
 ## Next steps:
 ####Product:
 1. Create the model for Consolidate.
 2. Create the algorithm to generate Consolidate
-2. Create an Angular 2 application for the frontend. 
+3. Create an Angular 2 application for the frontend. 
     2.1 I thought about render server side, so far indexing is not requirement. So I will create a SPA
 
 ####Technical
-1. Improving the api error handle. 
-2. Prepare the entire application to run with Docker-compose;
-3. Create health check;
-4. Create tests for DAO
-5. Improve the API security.
-6. Improving the services resilience
-7. Implement a layer of cache with Redis
-8. Using mongo with replica set
+1. Implement Swagger to document the api;
+2. Improving the api error handle;
+3. Prepare the entire application to run with Docker-compose;
+4. Create health check;
+5. Create tests for DAO
+6. Improve the API security.
+7. Improving the services resilience
+8. Implement a layer of cache with Redis
+9. Using mongo with replica set
