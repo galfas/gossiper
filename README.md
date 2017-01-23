@@ -46,11 +46,11 @@ Based on the User's stats and the friends that he has registered, I want to crea
  - User worst partner (makes the user looses more battles)
  - The worst enemy (makes the user looses more battle)
  - The worst enemy (makes the user looses more battle)
- - User best champion(champion that is used by the user during most of his wins)
+ - User best champion (champion that is used by the user during most of his wins)
  - User worst champion (champion that is used by the user during most of his losses)
 
- The information will be displayed in the website and I also want to integrate with email, sms and other services.
- (this would be the MVP)
+ <i>The information will be displayed in the website and I also want to integrate with email, sms and other services.
+ (this would be the MVP)</i>
 
 
 ## Next steps:
