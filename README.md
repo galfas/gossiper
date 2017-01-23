@@ -40,13 +40,16 @@ and then you will be able access the API via:
 
 <i>http://localhost:9090/gossiper/account/?name={userName}&region={userRegion}</i>
 
-###The product
-Based on the User's stats, I want to create a service that provide information like:
- - The best partner (friend that make the user wins more battle)
- - The worst enemy (friend that make the user looses more battle)
- - User best champion
- - User worst champion
- and so on 
+###The product 
+Based on the User's stats and the friends that he has registered, I want to create a service that provide information like:
+ - User best partner (makes the user wins more battles)
+ - User worst partner (makes the user looses more battles)
+ - The worst enemy (makes the user looses more battle)
+ - The worst enemy (makes the user looses more battle)
+ - User best champion(champion that is used by the user during most of his wins)
+ - User worst champion (champion that is used by the user during most of his losses)
+
+ The information will be displayed in the website and I also want to integrate with email, sms and other services.
  (this would be the MVP)
 
 
