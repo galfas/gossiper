@@ -11,6 +11,7 @@ apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
 apply plugin: 'spring-boot'
+apply plugin: 'application'
 
 jar {
   baseName = 'gossiper'
@@ -21,6 +22,10 @@ repositories {
   mavenCentral()
   maven { url "https://repo.spring.io/libs-release" }
 }
+
+
+
+mainClassName = 'com.mjs.gossiper.Application'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
