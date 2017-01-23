@@ -5,7 +5,7 @@ This project was built in java 8 with spring. It exposes an API that will retrie
 ###Start the application###
 in order to start the application, it is necessary to have <b>Mongo</b> and <b>RabbitMQ</b> running. There are 2 options you can install the dependencies by yourself or if you have docker you can just run the following command: 
 
-- *docker-compose up* <b>
+- *docker-compose up*
 
 <b>After you have the dependencies running you just have to execute the follow command:</b> 
 
